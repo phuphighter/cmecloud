@@ -3,18 +3,27 @@ require 'hashie/mash'
 require 'multi_xml'
 
 module Cmecloud
+  module Configuration
+    attr_accessor :username
+  
+    def configure
+      yield self
+    end
+  end
+  
   module Connection
     def connection
       @connection ||= Faraday.new('http://ws.cmedatacloud.com/v1/') do |conn|
         conn.request  :url_encoded
         conn.response :mashify
-        conn.response :xml, content_type: 'application/xml'
+        conn.response :xml,  :content_type => /\bxml$/
         conn.adapter  Faraday.default_adapter
       end
     end
 
     def get(path, params = nil)
       connection.get(path) do |request|
+        request.params[:Header_Username] = Cmecloud.username if Cmecloud.username
         request.params.update(params) if params
       end
     end
@@ -38,6 +47,7 @@ module Cmecloud
     end
   end
 
+  extend Configuration
   extend Connection
   extend ApiMethods
 end
