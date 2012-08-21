@@ -1,3 +1,4 @@
+require "cmecloud/version"
 require 'faraday_middleware'
 require 'hashie/mash'
 require 'multi_xml'
