@@ -16,6 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = Cmecloud::VERSION
   
   gem.add_development_dependency "faraday_middleware"
-  gem.add_development_dependency "hash"
+  gem.add_development_dependency "hashie"
   gem.add_development_dependency "multi_xml"
 end
